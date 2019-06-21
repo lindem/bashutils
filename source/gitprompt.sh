@@ -1,5 +1,10 @@
 GIT="$(which git)"
 
+ANSI_RESET=$(ansiseq 0)
+ANSI_YELLOW=$(ansiseq 33)
+ANSI_RED=$(ansiseq 31)
+ANSI_LGREEN=$(ansiseq 92)
+
 # Creates a string in the form of [branchname dirtymark], where dirtymark is
 # either a check mark (clean) or an x mark (dirty), if the function is called
 # inside a git repository.
@@ -11,11 +16,12 @@ function gitprompt() {
     then
       GITBRANCH="$($GIT branch 2>/dev/null | grep '^*' | colrm 1 2)"
       if [[ ! -z "$(echo $GITSTATUS | grep 'working tree clean')" ]]
-        then GITDIRTY=✔
-        else GITDIRTY=✗
+        then GITDIRTY="${ANSI_LGREEN}✔"
+        else GITDIRTY="${ANSI_RED}✗"
       fi
-      echo "[$GITBRANCH $GITDIRTY]"
+      # important: the trailing space.
+      echo "[${ANSI_YELLOW}${GITBRANCH} ${GITDIRTY}${ANSI_RESET}] "
     else
-      echo "$GITPATH $GITSTATUS"
+      echo ""
   fi
 }
