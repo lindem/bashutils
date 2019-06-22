@@ -16,11 +16,11 @@ function gitprompt() {
     then
       GITBRANCH="$($GIT branch 2>/dev/null | grep '^*' | colrm 1 2)"
       if [[ ! -z "$(echo $GITSTATUS | grep 'working tree clean')" ]]
-        then GITDIRTY="${ANSI_LGREEN}✔"
-        else GITDIRTY="${ANSI_RED}✗"
+        then GITDIRTY="\001${ANSI_LGREEN}\002✔"
+        else GITDIRTY="\001${ANSI_RED}\002✗"
       fi
       # important: the trailing space.
-      echo "[${ANSI_YELLOW}${GITBRANCH} ${GITDIRTY}${ANSI_RESET}] "
+      echo -e "[\001${ANSI_YELLOW}\002${GITBRANCH} ${GITDIRTY}\001${ANSI_RESET}\002] "
     else
       echo ""
   fi
